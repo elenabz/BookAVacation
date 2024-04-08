@@ -23,6 +23,5 @@ namespace BookAVacation.Models
         [DisplayName("Description of Property")]
         [MinLength(10, ErrorMessage = "Minim Length 10 characters")]
         public string? Description { get; set; }
-
     }
 }

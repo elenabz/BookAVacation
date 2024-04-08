@@ -17,6 +17,7 @@ builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
 }));
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();

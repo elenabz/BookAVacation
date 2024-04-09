@@ -21,10 +21,24 @@ namespace BookAVacation.Repository
             return Save();
         }
 
+        // todo where to have the logic? controller or repository 
         public List<DateTime> GetPropertyReservations(int propertyId)
         {
             var propertyReservations = _dataContext.Reservations.Where(r => r.Property.Id == propertyId).ToList();
-            return propertyReservations.Select(pr => pr.StartDate).ToList();
+            var dates = new HashSet<DateTime>();
+
+            propertyReservations.ForEach((pr) =>
+            {
+                for (var dt = pr.StartDate; dt <= pr.EndDate; dt = dt.AddDays(1))
+                {
+                    dates.Add(dt);
+                }
+            });
+
+            List<DateTime> bookedDates = dates.ToList();
+            // de ce nu pot return bookedDates.Sort... ?
+            bookedDates.Sort((x, y) => DateTime.Compare(x, y));
+            return bookedDates;
         }
 
         public bool Save()

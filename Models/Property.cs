@@ -17,6 +17,8 @@ namespace BookAVacation.Models
         public string City { get; set; }
         public string? Street { get; set; }
         public int? StreetNo { get; set; }
+        public int PricePerNight { get; set; }
+        public int MaxGuestsNo { get; set; }
         public int? Stars { get; set; }
         public string? Type { get; set; }
         public string? Phone { get; set; }

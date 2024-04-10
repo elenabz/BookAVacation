@@ -15,6 +15,7 @@ namespace BookAVacation.Repository
 
         public bool CreateReservation(int propertyId, Reservation reservation)
         {
+            // todo check if already exist reservation 
             var propertyEntity = _dataContext.Properties.Where(p => p.Id == propertyId).FirstOrDefault();
             reservation.Property = propertyEntity;
             _dataContext.Add(reservation);

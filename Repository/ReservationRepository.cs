@@ -15,14 +15,39 @@ namespace BookAVacation.Repository
 
         public bool CreateReservation(int propertyId, Reservation reservation)
         {
-            // todo check if already exist reservation 
+            var propertyReservations = _dataContext.Reservations.Where(r => r.Property.Id == propertyId).ToList();
+            bool hasReservation = false;
+            propertyReservations.ForEach((pr) =>
+            {
+                //if(!(reservation.StartDate < pr.StartDate && reservation.EndDate <= pr.StartDate))
+                //{
+                //     hasReservation = true;
+                //}
+                //else if(!(reservation.StartDate >= pr.EndDate && reservation.EndDate > pr.EndDate))
+                //{
+                //    hasReservation = true;
+                //}
+                if (reservation.StartDate >= pr.StartDate && reservation.StartDate < pr.EndDate)
+                {
+                    hasReservation = true;
+                }
+                if(reservation.EndDate > pr.StartDate && reservation.EndDate <= pr.EndDate)
+                {
+                    hasReservation = true;
+                }
+            });
+
+            if(hasReservation)
+            {
+                return false;
+            }
+
             var propertyEntity = _dataContext.Properties.Where(p => p.Id == propertyId).FirstOrDefault();
             reservation.Property = propertyEntity;
             _dataContext.Add(reservation);
             return Save();
         }
 
-        // todo where to have the logic? controller or repository 
         public List<DateTime> GetPropertyReservations(int propertyId)
         {
             var propertyReservations = _dataContext.Reservations.Where(r => r.Property.Id == propertyId).ToList();
@@ -30,7 +55,7 @@ namespace BookAVacation.Repository
 
             propertyReservations.ForEach((pr) =>
             {
-                for (var dt = pr.StartDate; dt <= pr.EndDate; dt = dt.AddDays(1))
+                for (var dt = pr.StartDate; dt < pr.EndDate; dt = dt.AddDays(1))
                 {
                     dates.Add(dt);
                 }

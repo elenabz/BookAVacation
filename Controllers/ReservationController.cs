@@ -11,10 +11,12 @@ namespace BookAVacation.Controllers
     public class ReservationController : ControllerBase
     {
         private readonly IReservationRepository _reservationRepository;
+        private readonly IPropertyRepository _propertyRepository;
         private readonly IMapper _mapper;
-        public ReservationController(IReservationRepository reservationRepository, IMapper mapper)
+        public ReservationController(IReservationRepository reservationRepository, IPropertyRepository propertyRepository, IMapper mapper)
         {
             _reservationRepository = reservationRepository;
+            _propertyRepository = propertyRepository;
             _mapper = mapper;
         }
 
@@ -23,7 +25,7 @@ namespace BookAVacation.Controllers
         [ProducesResponseType(404)]
         public IActionResult GetPropertyReservations(int propertyId)
         {
-            if(propertyId == 0)
+            if(propertyId < 1)
             {
                 return BadRequest(ModelState);
             }
@@ -36,6 +38,10 @@ namespace BookAVacation.Controllers
         [ProducesResponseType(404)]
         public IActionResult CreateReservation(int propertyId, [FromBody] ReservationDto reservationCreate)
         {
+            if (!_propertyRepository.PropertyExists(propertyId))
+            {
+                return NotFound();
+            }
             if (reservationCreate == null)
             {
                 return BadRequest(ModelState);

@@ -47,11 +47,15 @@ namespace BookAVacation.Controllers
                 return BadRequest(ModelState);
             }
 
+            Console.WriteLine(default(DateTime));
+
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
             }
+
             var reservationMap = _mapper.Map<Reservation>(reservationCreate);
+
             if (!_reservationRepository.CreateReservation(propertyId, reservationMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving the reservation.");

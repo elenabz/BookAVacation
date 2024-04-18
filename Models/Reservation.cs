@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookAVacation.ValidationAttributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookAVacation.Models
 {
@@ -10,14 +11,15 @@ namespace BookAVacation.Models
         [Required]
         public Property Property { set; get; }
 
-        [Required]
+        [Required(ErrorMessage = "Start Date is required.")]
+        [ValidStartDate]
         public DateTime StartDate { set; get; }
 
-        [Required]
+        [Required(ErrorMessage = "End Date is required.")]
         public DateTime EndDate { set; get; }
 
         [Required]
-        [Range(1, int.MaxValue)]
+        [Range(1, int.MaxValue, ErrorMessage = "Minim 1 guest.")]
         public int NoOfGuests { set; get; }
         //public User User { set; get; }
     }

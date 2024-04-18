@@ -7,10 +7,8 @@ namespace BookAVacation.Helper
     public class MappingProfiles : Profile
     {
         public MappingProfiles() {
-            CreateMap<PropertyMapAction, PropertyDto>().ReverseMap();
-            CreateMap<Reservation, ReservationDto>().ReverseMap();
-        
-        
+            CreateMap<Property, PropertyDto>().ReverseMap();
+            CreateMap<Reservation, ReservationDto>().ReverseMap();      
         }
 
     }

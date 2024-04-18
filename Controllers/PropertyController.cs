@@ -1,5 +1,7 @@
-﻿using BookaVacation.DTO;
+﻿using AutoMapper;
+using BookaVacation.DTO;
 using BookAVacation.Data;
+using BookAVacation.DTO;
 using BookAVacation.Interfaces;
 using BookAVacation.Models;
 using Microsoft.AspNetCore.Cors;
@@ -12,9 +14,11 @@ namespace BookAVacation.Controllers
     public class PropertyController : ControllerBase
     {
         private readonly IPropertyRepository _propertyRepository;
-        public PropertyController(IPropertyRepository propertyRepository)
+        private readonly IMapper _mapper;
+        public PropertyController(IPropertyRepository propertyRepository, IMapper mapper)
         {
             _propertyRepository = propertyRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -51,7 +55,7 @@ namespace BookAVacation.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public IActionResult CreateProperty([FromBody] Property propertyCreate)
+        public IActionResult CreateProperty([FromBody] PropertyDto propertyCreate)
         {
             if(propertyCreate == null)
             {
@@ -63,7 +67,8 @@ namespace BookAVacation.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!_propertyRepository.CreateProperty(propertyCreate))
+            var propertyMap = _mapper.Map<Property>(propertyCreate);
+            if (!_propertyRepository.CreateProperty(propertyMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving the property.");
                 return StatusCode(500, ModelState);

@@ -7,13 +7,15 @@ namespace BookAVacation.Models
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         [DisplayName("Property Name")]
-        [MinLength(1, ErrorMessage = "Minim Length 10 characters")]
+        [MinLength(5, ErrorMessage = "Minim Length 5 characters")]
         public string Name { get; set; }
         public string? Country { get; set; }
+
         [DisplayName("City of Property")]
-        [MinLength(1, ErrorMessage = "Minim Length 10 characters")]
+        [MinLength(10, ErrorMessage = "Minim Length 1 characters")]
         public string City { get; set; }
         public string? Street { get; set; }
         public int? StreetNo { get; set; }
@@ -23,7 +25,7 @@ namespace BookAVacation.Models
         public string? Type { get; set; }
         public string? Phone { get; set; }
         [DisplayName("Description of Property")]
-        [MinLength(10, ErrorMessage = "Minim Length 10 characters")]
+        [MinLength(3, ErrorMessage = "Minim Length 3 characters")]
         public string? Description { get; set; }
     }
 }

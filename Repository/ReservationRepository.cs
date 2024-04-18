@@ -19,19 +19,7 @@ namespace BookAVacation.Repository
             bool hasReservation = false;
             propertyReservations.ForEach((pr) =>
             {
-                //if(!(reservation.StartDate < pr.StartDate && reservation.EndDate <= pr.StartDate))
-                //{
-                //     hasReservation = true;
-                //}
-                //else if(!(reservation.StartDate >= pr.EndDate && reservation.EndDate > pr.EndDate))
-                //{
-                //    hasReservation = true;
-                //}
-                if (reservation.StartDate >= pr.StartDate && reservation.StartDate < pr.EndDate)
-                {
-                    hasReservation = true;
-                }
-                if(reservation.EndDate > pr.StartDate && reservation.EndDate <= pr.EndDate)
+                if (reservation.StartDate < pr.EndDate && reservation.EndDate > pr.StartDate)
                 {
                     hasReservation = true;
                 }

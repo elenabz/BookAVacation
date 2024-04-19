@@ -3,7 +3,7 @@
 namespace BookAVacation.ValidationAttributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class ValidStartDateAttribute : ValidationAttribute
+    public class StartDateAttribute : ValidationAttribute
     {
         public override bool IsValid(object? value)
         {

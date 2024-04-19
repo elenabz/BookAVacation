@@ -47,7 +47,10 @@ namespace BookAVacation.Controllers
                 return BadRequest(ModelState);
             }
 
-            Console.WriteLine(default(DateTime));
+            if(!ValidateEndDate(reservationCreate.StartDate, reservationCreate.EndDate))
+            {
+                return ValidationProblem("Invalid Start Date and End Date.");
+            }
 
             if (!ModelState.IsValid)
             {
@@ -62,6 +65,15 @@ namespace BookAVacation.Controllers
                 return StatusCode(500, ModelState);
             }
             return Ok("Successfully created.");
+        }
+
+        private static bool ValidateEndDate(DateTime startDate, DateTime endDate)
+        {
+            if (endDate < startDate)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

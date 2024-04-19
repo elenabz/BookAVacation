@@ -12,7 +12,7 @@ namespace BookAVacation.Models
         public Property Property { set; get; }
 
         [Required(ErrorMessage = "Start Date is required.")]
-        [ValidStartDate]
+        [StartDate]
         public DateTime StartDate { set; get; }
 
         [Required(ErrorMessage = "End Date is required.")]

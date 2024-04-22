@@ -2,11 +2,15 @@
 using BookAVacation.DTO;
 using BookAVacation.Interfaces;
 using BookAVacation.Models;
+using BookAVacation.Validations;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BookAVacation.Controllers
 {
-    [ApiController]
+    [ApiController] // no need to add !ModelState.IsValid && [FromBody] [FromRoute]
     [Route("[controller]")]
     public class ReservationController : ControllerBase
     {
@@ -36,8 +40,20 @@ namespace BookAVacation.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public IActionResult CreateReservation(int propertyId, [FromBody] ReservationDto reservationCreate)
+        public IActionResult CreateReservation(int propertyId, ReservationDto reservationCreate)
         {
+            var v = new CreateReservationRequestValidator();
+            ValidationResult validationResult = v.Validate(reservationCreate);
+            if (!validationResult.IsValid)
+            {
+                var modelStateDictionary = new ModelStateDictionary();
+                foreach(ValidationFailure failure in validationResult.Errors)
+                {
+                    modelStateDictionary.AddModelError(failure.PropertyName, failure.ErrorMessage);
+                }
+                return ValidationProblem(modelStateDictionary);
+
+            }
             if (!_propertyRepository.PropertyExists(propertyId))
             {
                 return NotFound();
@@ -47,9 +63,9 @@ namespace BookAVacation.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(!ValidateEndDate(reservationCreate.StartDate, reservationCreate.EndDate))
+            if (!ValidatePeriod(reservationCreate.StartDate, reservationCreate.EndDate))
             {
-                return ValidationProblem("Invalid Start Date and End Date.");
+                return ValidationProblem("Invalid dates for reservation.");
             }
 
             if (!ModelState.IsValid)
@@ -67,7 +83,7 @@ namespace BookAVacation.Controllers
             return Ok("Successfully created.");
         }
 
-        private static bool ValidateEndDate(DateTime startDate, DateTime endDate)
+        private static bool ValidatePeriod(DateTime startDate, DateTime endDate)
         {
             if (endDate < startDate)
             {

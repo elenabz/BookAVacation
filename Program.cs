@@ -1,6 +1,9 @@
 using BookAVacation.Data;
+using BookAVacation.DTO;
 using BookAVacation.Interfaces;
 using BookAVacation.Repository;
+using BookAVacation.Validations;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +21,7 @@ builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IValidator<ReservationDto>, CreateReservationRequestValidator>();
 
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();

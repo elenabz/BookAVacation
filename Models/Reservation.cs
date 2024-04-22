@@ -16,6 +16,7 @@ namespace BookAVacation.Models
         public DateTime StartDate { set; get; }
 
         [Required(ErrorMessage = "End Date is required.")]
+        [Future]
         public DateTime EndDate { set; get; }
 
         [Required]

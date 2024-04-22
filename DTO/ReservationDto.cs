@@ -9,7 +9,9 @@ namespace BookAVacation.DTO
         [StartDate]
         public DateTime StartDate { set; get; }
 
-        [Required]
+        [Required(ErrorMessage = "End Date is required.")]
+        //[Future]
+        [Future(InvalidDate = "End Date is invalid.")]
         public DateTime EndDate { set; get; }
 
         [Required]

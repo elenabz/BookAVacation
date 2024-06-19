@@ -5,11 +5,13 @@ using BookAVacation.Models;
 using BookAVacation.Validations;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BookAVacation.Controllers
 {
+    [Authorize]
     [ApiController] // no need to add !ModelState.IsValid && [FromBody] [FromRoute]
     [Route("[controller]")]
     public class ReservationController : ControllerBase

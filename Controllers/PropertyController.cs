@@ -4,11 +4,13 @@ using BookAVacation.Data;
 using BookAVacation.DTO;
 using BookAVacation.Interfaces;
 using BookAVacation.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookAVacation.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PropertyController : ControllerBase

@@ -1,9 +1,11 @@
 ﻿using BookAVacation.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace BookAVacation.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public IConfiguration _config { get; set; }
         public ApplicationDbContext(IConfiguration config)
@@ -16,12 +18,12 @@ namespace BookAVacation.Data
             optionsBuilder.UseSqlServer(_config.GetConnectionString("DatabaseConnection"));
         }
         public DbSet<Property> Properties { get; set; }
-        public DbSet<User> User { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Authentication.User> Users { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuider)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            Console.WriteLine("success");
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
